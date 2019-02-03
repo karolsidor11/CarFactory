@@ -1,30 +1,42 @@
 package pl.sidor.CarFactory.model;
 
-import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public class Car {
+import javax.persistence.*;
+import java.io.Serializable;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "Samochody")
+public class Car implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private int id;
+
+    @Column(name = "Marka")
     private String name;
 
-    public String getName() {
-        return name;
-    }
+    @Column(name = "Model")
+    private String model;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    @Column(name = "Moc")
+    private int power;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Car car = (Car) o;
-        return Objects.equals(name, car.name);
-    }
+    @Column(name = "Pojemność")
+    private double capacity;
 
-    @Override
-    public int hashCode() {
+    @Column(name = "Kolor")
+    private String color;
 
-        return Objects.hash(name);
-    }
+    @Column(name = "Dlugość")
+    private double length;
+
+    @Column(name = "Szerokość")
+    private double width;
+
 }
