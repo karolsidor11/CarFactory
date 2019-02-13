@@ -5,38 +5,40 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "Samochody")
-public class Car implements Serializable {
+public class Car {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @Column(name = "Marka")
     private String name;
 
+
     @Column(name = "Model")
     private String model;
 
-    @Column(name = "Moc")
-    private int power;
 
-    @Column(name = "Pojemność")
-    private double capacity;
+    @OneToOne()
+    @JoinColumn(name = "silnik_id")
+    private Engine engine;
+
+    @OneToOne
+    @JoinColumn(name = "nadwozie_id")
+    private Body body;
+
+    @OneToOne
+    @JoinColumn(name = "podwozie_id")
+    private Chassis chassis;
 
     @Column(name = "Kolor")
     private String color;
 
-    @Column(name = "Dlugość")
-    private double length;
-
-    @Column(name = "Szerokość")
-    private double width;
 
 }

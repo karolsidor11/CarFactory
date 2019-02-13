@@ -51,6 +51,11 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>pl.sidor</groupId>-->
+			<!--<artifactId>CarFactoryAPI</artifactId>-->
+			<!--<version>1.0-SNAPSHOT</version>-->
+		<!--</dependency>-->
 
 	</dependencies>
 
