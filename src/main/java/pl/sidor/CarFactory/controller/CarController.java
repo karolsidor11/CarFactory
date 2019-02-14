@@ -12,6 +12,7 @@ import pl.sidor.CarFactory.service.EngineService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class CarController {
@@ -26,56 +27,24 @@ public class CarController {
         this.carDao = carDao;
     }
 
-    @GetMapping(value = "/getCar", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Car> getCar(@RequestBody String name) {
+    @GetMapping(value = "/get/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Car> getCar(@PathVariable String name) {
 
-        Car car = new Car();
-        car.setName("Audi");
-        if (name.equals(car.getName())) {
-            return new ResponseEntity<>(car, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        Optional<Car> byName = carDao.findByName(name);
+
+        HttpStatus httpStatus = byName.get() != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+
+        return new ResponseEntity<>(byName.get(), httpStatus);
     }
 
-    @RequestMapping(value = "add", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Car> addCar() {
 
-//        Car car = new Car(1, "Audi", "A6", 150, 1.8, "Blue", 1400, 2000);
-//        carDao.save(car);
 
-        return new ResponseEntity<>(HttpStatus.OK);
-
-    }
-
-    @RequestMapping(value = "list", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @RequestMapping(value = "listCar", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     public List<Car> getAllCars() {
 
         return (List<Car>) carDao.findAll();
     }
 
-    @RequestMapping(value = "marka/{name}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-    public ResponseEntity<List<Car>> findByName(@PathVariable String name) {
-
-        List<Car> byName = carDao.findByName(name);
-
-        HttpStatus httpStatus = byName != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
-
-        return new ResponseEntity<>(byName, httpStatus);
-
-    }
-
-
-    @RequestMapping(value = "{power}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Engine>> getEngineByPower(@PathVariable int power) {
-
-        List<Engine> byPower = engineService.findByPower(power);
-
-        HttpStatus httpStatus = byPower != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
-
-        return new ResponseEntity<>(byPower, httpStatus);
-
-    }
 
 
     @RequestMapping(value = "produce/{count}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

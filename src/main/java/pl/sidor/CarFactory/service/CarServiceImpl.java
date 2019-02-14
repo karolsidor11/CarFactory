@@ -6,20 +6,24 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import pl.sidor.CarFactory.dao.CarDao;
 import pl.sidor.CarFactory.model.Car;
 import pl.sidor.CarFactory.model.Engine;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CarServiceImpl implements CarService {
 
 
     private RestTemplate restTemplate;
+    private CarDao carDao;
 
     @Autowired
-    public CarServiceImpl(RestTemplate restTemplate) {
+    public CarServiceImpl(RestTemplate restTemplate, CarDao carDao) {
         this.restTemplate = restTemplate;
+        this.carDao = carDao;
     }
 
     @Override
@@ -41,5 +45,12 @@ public class CarServiceImpl implements CarService {
 
 
         return null;
+    }
+
+    @Override
+    public Optional<Car> findByName(String name) {
+        Optional<Car> byName = carDao.findByName(name);
+
+        return byName;
     }
 }
