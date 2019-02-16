@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 
 @SpringBootApplication
+@ComponentScan("pl.sidor")
 public class CarFactoryApplication {
 
 	public static void main(String[] args) {

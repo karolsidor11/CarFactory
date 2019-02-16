@@ -6,4 +6,6 @@ import pl.sidor.CarFactory.model.Body;
 
 @Repository
 public interface BodyDao extends CrudRepository<Body, Integer> {
+
+    Body findById(int id);
 }

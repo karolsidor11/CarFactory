@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import pl.sidor.CarFactory.dao.CarDao;
 import pl.sidor.CarFactory.model.Car;
 import pl.sidor.CarFactory.model.Engine;
+import pl.sidor.CarFactory.service.CarService;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,5 +53,18 @@ public class CarServiceImpl implements CarService {
         Optional<Car> byName = carDao.findByName(name);
 
         return byName;
+    }
+
+    @Override
+    public Optional<Car> saveCar(Car car) {
+        ResponseEntity<Car> exchange = restTemplate.exchange("http://localhost:8080/", HttpMethod.POST, null, new ParameterizedTypeReference<Car>() {
+        });
+
+        restTemplate.postForObject("http://localhost:8080/save", car,Car.class);
+
+        carDao.save(exchange.getBody());
+
+        return Optional.ofNullable(exchange.getBody());
+
     }
 }

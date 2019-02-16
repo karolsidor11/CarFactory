@@ -15,4 +15,6 @@ public interface CarService {
 
     Optional<Car> findByName(String name);
 
+    Optional<Car> saveCar(Car car);
+
 }

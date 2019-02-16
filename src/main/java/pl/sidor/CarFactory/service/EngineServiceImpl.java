@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import pl.sidor.CarFactory.dao.EngineDao;
 import pl.sidor.CarFactory.model.Engine;
+import pl.sidor.CarFactory.service.EngineService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EngineServiceImpl implements EngineService {
@@ -24,8 +26,18 @@ public class EngineServiceImpl implements EngineService {
     }
 
     @Override
-    public List<Engine> findAll() {
-        return (List<Engine>) engineDao.findAll();
+    public Optional<List<Engine>> findAll() {
+
+        ResponseEntity<List<Engine>> exchange = template.exchange("http://localhost:8080/allEngine", HttpMethod.GET, null, new ParameterizedTypeReference<List<Engine>>() {
+        });
+
+        if (exchange.getBody() != null) {
+            return Optional.of(exchange.getBody());
+        } else {
+            return Optional.empty();
+        }
+
+
     }
 
     @Override

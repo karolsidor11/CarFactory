@@ -3,10 +3,11 @@ package pl.sidor.CarFactory.service;
 import pl.sidor.CarFactory.model.Engine;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EngineService {
 
-    List<Engine> findAll();
+    Optional<List<Engine>> findAll();
 
     Engine findById(int id);
 

@@ -1,6 +1,7 @@
 package pl.sidor.CarFactory.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import pl.sidor.CarFactory.dao.CarDao;
 import pl.sidor.CarFactory.model.Car;
 import pl.sidor.CarFactory.model.Engine;
+import pl.sidor.CarFactory.service.BodyService;
+import pl.sidor.CarFactory.service.ChassisService;
 import pl.sidor.CarFactory.service.EngineService;
 
 import java.util.ArrayList;
@@ -18,13 +21,16 @@ import java.util.Optional;
 public class CarController {
 
     private CarDao carDao;
-    @Autowired
     private EngineService engineService;
-
+    private BodyService bodyService;
+    private ChassisService chassisService;
 
     @Autowired
-    public CarController(CarDao carDao) {
+    public CarController(CarDao carDao, EngineService engineService, BodyService bodyService, ChassisService chassisService) {
         this.carDao = carDao;
+        this.engineService = engineService;
+        this.bodyService = bodyService;
+        this.chassisService = chassisService;
     }
 
     @GetMapping(value = "/get/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -55,14 +61,15 @@ public class CarController {
         for (int i = 0; i < count; i++) {
             Car car = new Car();
             car.setName("Audi");
-            car.setEngine(null);
+            car.setEngine(engineService.findAll().get().get(1));
             car.setColor("Blue");
-            car.setBody(null);
-            car.setChassis(null);
+            car.setBody(bodyService.findById(2).get());
+            car.setChassis(chassisService.findById(2).get());
             car.setId(i);
             car.setModel("A7");
             carList.add(car);
-            carDao.save(car);
+
+//            carDao.save(car);
 
         }
 
