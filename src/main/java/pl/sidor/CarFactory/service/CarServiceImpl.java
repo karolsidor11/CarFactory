@@ -67,4 +67,9 @@ public class CarServiceImpl implements CarService {
         return Optional.ofNullable(exchange.getBody());
 
     }
+
+    @Override
+    public Optional<List<Car>> findAllCars() {
+        return Optional.empty();
+    }
 }

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface BodyService {
 
-    Optional<Body> findAll();
+    Optional<List<Body>> findAll();
 
     Optional<Body> findById(int id);
 }

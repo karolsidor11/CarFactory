@@ -17,4 +17,6 @@ public interface CarService {
 
     Optional<Car> saveCar(Car car);
 
+    Optional<List<Car>> findAllCars();
+
 }

@@ -10,6 +10,7 @@ import pl.sidor.CarFactory.dao.BodyDao;
 import pl.sidor.CarFactory.model.Body;
 import pl.sidor.CarFactory.service.BodyService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,7 +26,7 @@ public class BodyServiceImpl implements BodyService {
     }
 
     @Override
-    public Optional<Body> findAll() {
+    public Optional<List<Body>> findAll() {
 
 //        template.exchange("http://localhost:8080/")
 
