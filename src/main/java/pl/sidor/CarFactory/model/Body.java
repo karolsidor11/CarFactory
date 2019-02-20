@@ -10,20 +10,20 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "Nadwozie")
+@Table(name = "Body")
 public class Body {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "Typ")
+    @Column(name = "BodyCar")
     private String bodyCar;
 
-    @Column(name = "Kolor")
+    @Column(name = "Color")
     private String color;
 
-    @Column(name = "Ilość_drzwi")
+    @Column(name = "Doors")
     private int door;
 
 }

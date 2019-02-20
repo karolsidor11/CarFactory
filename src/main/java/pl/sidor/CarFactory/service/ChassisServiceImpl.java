@@ -6,39 +6,50 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import pl.sidor.CarFactory.dao.ChassisDao;
 import pl.sidor.CarFactory.model.Chassis;
-import pl.sidor.CarFactory.service.ChassisService;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ChassisServiceImpl implements ChassisService {
 
-    private ChassisDao chassisDao;
     private RestTemplate template;
+    private static final String AUTO_PARTS_URL = "http://localhost:8080/";
 
     @Autowired
-    public ChassisServiceImpl(ChassisDao chassisDao, RestTemplate template) {
-        this.chassisDao = chassisDao;
+    public ChassisServiceImpl(RestTemplate template) {
         this.template = template;
     }
 
     @Override
-    public Optional<List<Chassis>> findAll() {
+    public List<Chassis> findAll() {
 
-        return null;
-//        template.exchange("http://localhost:8080/")
+        ResponseEntity<List<Chassis>> exchange1 = getChassisFromAutoParts();
+
+        if (!exchange1.getBody().isEmpty()) {
+            return exchange1.getBody();
+        } else {
+            return Collections.emptyList();
+        }
     }
 
+    private ResponseEntity<List<Chassis>> getChassisFromAutoParts() {
+        return template.exchange(AUTO_PARTS_URL + "chassis", HttpMethod.GET,
+                null, new ParameterizedTypeReference<List<Chassis>>() {
+        });
+    }
 
     @Override
-    public Optional<Chassis> findById(int id) {
+    public Chassis findById(int id) {
 
-        ResponseEntity<Chassis> exchange = template.exchange("http://localhost:8080/chassis/" + id, HttpMethod.GET, null, new ParameterizedTypeReference<Chassis>() {
+        ResponseEntity<Chassis> exchange = getChassisByIdFromAutoParts(id);
+        return exchange.getBody();
+    }
+
+    private ResponseEntity<Chassis> getChassisByIdFromAutoParts(int id) {
+        return template.exchange(AUTO_PARTS_URL +"chassis/"+ id, HttpMethod.GET,
+                null, new ParameterizedTypeReference<Chassis>() {
         });
-
-       return Optional.ofNullable(exchange.getBody());
     }
 }

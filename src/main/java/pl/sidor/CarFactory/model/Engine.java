@@ -10,19 +10,19 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "Silnik")
+@Table(name = "Engine")
 public class Engine {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "Pojemność")
+    @Column(name = "Capacity")
     private double capacity;
 
-    @Column(name = "Moc")
+    @Column(name = "Power")
     private int power;
 
-    @Column(name = "Moment_obrotowy")
+    @Column(name = "Torque")
     private int torque;
 }

@@ -9,7 +9,4 @@ import java.util.List;
 @Repository
 public interface EngineDao extends CrudRepository<Engine, Integer> {
 
-    List<Engine> findByPower(int power);
-
-    Engine findById(int id);
 }

@@ -6,45 +6,53 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import pl.sidor.CarFactory.dao.BodyDao;
 import pl.sidor.CarFactory.model.Body;
-import pl.sidor.CarFactory.service.BodyService;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BodyServiceImpl implements BodyService {
 
-    private BodyDao bodyDao;
-    private RestTemplate template;
+	private RestTemplate template;
+	private static final String AUTO_PART_URL = "http://localhost:8080/";
 
-    @Autowired
-    public BodyServiceImpl(BodyDao bodyDao, RestTemplate template) {
-        this.bodyDao = bodyDao;
-        this.template = template;
-    }
+	@Autowired
+	public BodyServiceImpl(RestTemplate template) {
+		this.template = template;
+	}
 
-    @Override
-    public Optional<List<Body>> findAll() {
+	@Override
+	public List<Body> findAll() {
 
-//        template.exchange("http://localhost:8080/")
+		ResponseEntity<List<Body>> exchange = getAllBodyFromAutoParts();
 
-        return null;
-    }
+		if (!exchange.getBody().isEmpty()) {
+			return exchange.getBody();
+		} else {
+			return Collections.emptyList();
+		}
+	}
 
-    @Override
-    public Optional<Body> findById(int id) {
+	private ResponseEntity<List<Body>> getAllBodyFromAutoParts() {
+		return template.exchange(AUTO_PART_URL + "bodies", HttpMethod.GET, null,
+				new ParameterizedTypeReference<List<Body>>() {
+		});
+	}
 
-        ResponseEntity<Body> exchange = template.exchange("http://localhost:8080/chassis/" + id, HttpMethod.GET, null, new ParameterizedTypeReference<Body>() {
-        });
+	@Override
+	public Body findById(int id) {
 
-        if (exchange.getBody() != null) {
-            return Optional.ofNullable(exchange.getBody());
-        } else {
-            return Optional.empty();
-        }
+		ResponseEntity<Body> exchange = getBodyFromAutoParts(AUTO_PART_URL + "body/" + id);
 
+		return exchange.getBody();
 
-    }
+	}
+
+	private ResponseEntity<Body> getBodyFromAutoParts(String url) {
+		return template.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<Body>() {
+		});
+	}
+
 }
+

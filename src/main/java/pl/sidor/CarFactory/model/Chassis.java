@@ -10,24 +10,23 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "Podwozie")
+@Table(name = "Chassis")
 public class Chassis {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "Naped")
+    @Column(name = "Drive")
     private String drive;
 
-    @Column(name = "Hamulce")
+    @Column(name = "Brakes")
     private String brakes;
 
-    @Column(name = "Zawieszenie")
+    @Column(name = "Suspension")
     private String suspension;
 
-    @Column(name = "Układ_kierowniczy")
+    @Column(name = "Steering")
     private String steering;
 
 }

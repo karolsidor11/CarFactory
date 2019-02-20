@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface ChassisService {
 
-    Optional<List<Chassis>> findAll();
+    List<Chassis> findAll();
 
-    Optional<Chassis> findById(int id);
+    Chassis findById(int id);
 }

@@ -8,68 +8,48 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import pl.sidor.CarFactory.dao.CarDao;
 import pl.sidor.CarFactory.model.Car;
-import pl.sidor.CarFactory.model.Engine;
-import pl.sidor.CarFactory.service.CarService;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CarServiceImpl implements CarService {
 
-
+    private static final String AUTO_PARTS_URL = "http://localhost:8080/";
     private RestTemplate restTemplate;
-    private CarDao carDao;
 
     @Autowired
-    public CarServiceImpl(RestTemplate restTemplate, CarDao carDao) {
+    public CarServiceImpl(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
-        this.carDao = carDao;
     }
 
     @Override
-    public List<Engine> findAll() {
+    public List<Car> findAll() {
 
-        ResponseEntity<List<Engine>> exchange = restTemplate.exchange("http://localhost:8080/allEngine", HttpMethod.GET, null, new ParameterizedTypeReference<List<Engine>>() {
+        ResponseEntity<List<Car>> exchange1 = getCarsFromAutoParts();
+
+        if (!exchange1.getBody().isEmpty()) {
+            return exchange1.getBody();
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    private ResponseEntity<List<Car>> getCarsFromAutoParts() {
+        return getCars();
+    }
+
+    private ResponseEntity<List<Car>> getCars() {
+        return restTemplate.exchange(AUTO_PARTS_URL + "cars", HttpMethod.GET,
+                null, new ParameterizedTypeReference<List<Car>>() {
         });
-
-
-        return exchange.getBody();
     }
 
     @Override
-    public Car createCar(int count) {
+    public Car saveCar(Car car) {
 
-        Car car = new Car();
-
-//        car.setEngine(engineService.getEngine());
-
-
-        return null;
-    }
-
-    @Override
-    public Optional<Car> findByName(String name) {
-        Optional<Car> byName = carDao.findByName(name);
-
-        return byName;
-    }
-
-    @Override
-    public Optional<Car> saveCar(Car car) {
-        ResponseEntity<Car> exchange = restTemplate.exchange("http://localhost:8080/", HttpMethod.POST, null, new ParameterizedTypeReference<Car>() {
-        });
-
-        restTemplate.postForObject("http://localhost:8080/save", car,Car.class);
-
-        carDao.save(exchange.getBody());
-
-        return Optional.ofNullable(exchange.getBody());
+        return restTemplate.postForObject(AUTO_PARTS_URL + "save", car, Car.class);
 
     }
 
-    @Override
-    public Optional<List<Car>> findAllCars() {
-        return Optional.empty();
-    }
 }

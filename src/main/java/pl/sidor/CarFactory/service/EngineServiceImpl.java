@@ -6,50 +6,52 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import pl.sidor.CarFactory.dao.EngineDao;
 import pl.sidor.CarFactory.model.Engine;
-import pl.sidor.CarFactory.service.EngineService;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EngineServiceImpl implements EngineService {
 
-    private EngineDao engineDao;
     private RestTemplate template;
+    private static final String AUTO_PART_URL = "http://localhost:8080/";
 
     @Autowired
-    public EngineServiceImpl(EngineDao engineDao, RestTemplate template) {
-        this.engineDao = engineDao;
+    public EngineServiceImpl(RestTemplate template) {
         this.template = template;
     }
 
     @Override
-    public Optional<List<Engine>> findAll() {
+    public List<Engine> findAll() {
 
-        ResponseEntity<List<Engine>> exchange = template.exchange("http://localhost:8080/allEngine", HttpMethod.GET, null, new ParameterizedTypeReference<List<Engine>>() {
-        });
+        ResponseEntity<List<Engine>> exchange = getListEngine();
 
-        if (exchange.getBody() != null) {
-            return Optional.of(exchange.getBody());
+        if (!exchange.getBody().isEmpty()) {
+            return exchange.getBody();
         } else {
-            return Optional.empty();
+            return Collections.emptyList();
         }
+    }
 
-
+    private ResponseEntity<List<Engine>> getListEngine() {
+        return template.exchange(AUTO_PART_URL + "engines", HttpMethod.GET,
+                null, new ParameterizedTypeReference<List<Engine>>() {
+        });
     }
 
     @Override
     public Engine findById(int id) {
-        return engineDao.findById(id);
+        ResponseEntity<Engine> exchange1 = getEngineByID(id);
+
+        return exchange1.getBody();
     }
 
-    @Override
-    public List<Engine> findByPower(int power) {
-
-        ResponseEntity<List<Engine>> exchange = template.exchange("http://localhost:8080/moc/" + power, HttpMethod.GET, null, new ParameterizedTypeReference<List<Engine>>() {
+    private ResponseEntity<Engine> getEngineByID(int id) {
+        ResponseEntity<Engine> exchange = template.exchange(AUTO_PART_URL + "engine/" + id,
+                HttpMethod.GET, null, new ParameterizedTypeReference<Engine>() {
         });
-        return exchange.getBody();
+        return exchange;
     }
+
 }
