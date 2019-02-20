@@ -1,30 +1,44 @@
 package pl.sidor.CarFactory.model;
 
-import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
+@Table(name = "Cars")
 public class Car {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+
+    @Column(name = "Mark")
     private String name;
 
-    public String getName() {
-        return name;
-    }
+    @Column(name = "Model")
+    private String model;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    @OneToOne()
+    @JoinColumn(name = "engine_id")
+    private Engine engine;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Car car = (Car) o;
-        return Objects.equals(name, car.name);
-    }
+    @OneToOne
+    @JoinColumn(name = "body_id")
+    private Body body;
 
-    @Override
-    public int hashCode() {
+    @OneToOne
+    @JoinColumn(name = "chassis_id")
+    private Chassis chassis;
 
-        return Objects.hash(name);
-    }
+    @Column(name = "Color")
+    private String color;
+
+
 }
