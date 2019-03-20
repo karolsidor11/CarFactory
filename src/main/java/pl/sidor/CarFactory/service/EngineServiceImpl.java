@@ -1,12 +1,12 @@
 package pl.sidor.CarFactory.service;
 
+import models.Engine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import pl.sidor.CarFactory.model.Engine;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,8 +35,7 @@ public class EngineServiceImpl implements EngineService {
     }
 
     private ResponseEntity<List<Engine>> getListEngine() {
-        return template.exchange(AUTO_PART_URL + "engines", HttpMethod.GET,
-                null, new ParameterizedTypeReference<List<Engine>>() {
+        return template.exchange(AUTO_PART_URL + "engines", HttpMethod.GET, null, new ParameterizedTypeReference<List<Engine>>() {
         });
     }
 
@@ -48,8 +47,7 @@ public class EngineServiceImpl implements EngineService {
     }
 
     private ResponseEntity<Engine> getEngineByID(int id) {
-        ResponseEntity<Engine> exchange = template.exchange(AUTO_PART_URL + "engine/" + id,
-                HttpMethod.GET, null, new ParameterizedTypeReference<Engine>() {
+        ResponseEntity<Engine> exchange = template.exchange(AUTO_PART_URL + "engine/" + id, HttpMethod.GET, null, new ParameterizedTypeReference<Engine>() {
         });
         return exchange;
     }

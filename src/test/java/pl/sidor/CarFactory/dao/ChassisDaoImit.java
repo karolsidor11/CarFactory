@@ -1,6 +1,6 @@
 //package pl.sidor.CarFactory.dao;
 //
-//import pl.sidor.CarFactory.model.Chassis;
+//import pl.sidor.CarFactory.models.Chassis;
 //import pl.sidor.CarFactory.service.ChassisService;
 //
 //import java.util.ArrayList;

@@ -1,13 +1,12 @@
 package pl.sidor.CarFactory.service;
 
+import models.Car;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import pl.sidor.CarFactory.dao.CarDao;
-import pl.sidor.CarFactory.model.Car;
 
 import java.util.Collections;
 import java.util.List;
@@ -40,8 +39,7 @@ public class CarServiceImpl implements CarService {
     }
 
     private ResponseEntity<List<Car>> getCars() {
-        return restTemplate.exchange(AUTO_PARTS_URL + "cars", HttpMethod.GET,
-                null, new ParameterizedTypeReference<List<Car>>() {
+        return restTemplate.exchange(AUTO_PARTS_URL + "cars", HttpMethod.GET, null, new ParameterizedTypeReference<List<Car>>() {
         });
     }
 

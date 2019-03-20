@@ -1,10 +1,10 @@
 //package pl.sidor.CarFactory.dao;
 //
-//import model.Body;
-//import pl.sidor.CarFactory.model.Body;
-//import pl.sidor.CarFactory.model.Car;
-//import pl.sidor.CarFactory.model.Chassis;
-//import pl.sidor.CarFactory.model.Engine;
+//import models.Body;
+//import pl.sidor.CarFactory.models.Body;
+//import pl.sidor.CarFactory.models.Car;
+//import pl.sidor.CarFactory.models.Chassis;
+//import pl.sidor.CarFactory.models.Engine;
 //import pl.sidor.CarFactory.service.CarService;
 //
 //import java.util.ArrayList;

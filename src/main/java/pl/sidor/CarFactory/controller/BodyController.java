@@ -1,5 +1,6 @@
 package pl.sidor.CarFactory.controller;
 
+import models.Body;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import pl.sidor.CarFactory.model.Body;
 import pl.sidor.CarFactory.service.BodyService;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class BodyController {
 
         HttpStatus httpStatus = HttpStatus.OK;
 
-        return  all.map(bodies -> new ResponseEntity<>(all.get(),httpStatus)).orElseGet(()->new ResponseEntity<>(httpStatus));
+        return all.map(bodies -> new ResponseEntity<>(all.get(), httpStatus)).orElseGet(() -> new ResponseEntity<>(httpStatus));
 
     }
 
@@ -46,7 +46,7 @@ public class BodyController {
 
         HttpStatus httpStatus = HttpStatus.OK;
 
-        return byId.map(body -> new ResponseEntity<>(byId.get(), httpStatus)).orElseGet(()->new ResponseEntity<>(httpStatus));
+        return byId.map(body -> new ResponseEntity<>(byId.get(), httpStatus)).orElseGet(() -> new ResponseEntity<>(httpStatus));
     }
 
     private Optional<Body> getBodyFromID(@PathVariable int id) {

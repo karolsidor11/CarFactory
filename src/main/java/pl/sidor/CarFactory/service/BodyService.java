@@ -1,6 +1,6 @@
 package pl.sidor.CarFactory.service;
 
-import pl.sidor.CarFactory.model.Body;
+import models.Body;
 
 import java.util.List;
 

@@ -1,11 +1,12 @@
 package pl.sidor.CarFactory.controller;
 
+
+import models.Car;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.sidor.CarFactory.model.Car;
 import pl.sidor.CarFactory.service.BodyService;
 import pl.sidor.CarFactory.service.CarService;
 import pl.sidor.CarFactory.service.ChassisService;
@@ -62,6 +63,7 @@ public class CarController {
 
         Optional<List<Car>> all = Optional.ofNullable(carService.findAll());
 
+//todo do service
         for (int i = 0; i < count; i++) {
             Car newCar = createNewCar();
             if (all.isPresent()) {
@@ -74,23 +76,37 @@ public class CarController {
 
     }
 
-    private Car createNewCar() {
+    public Car createNewCar() {
         Car.CarBuilder builder = Car.builder();
 
         builder.id(1);
         Optional.ofNullable(bodyService.findById(1)).ifPresent(builder::body);
         Optional.ofNullable(engineService.findById(1)).ifPresent(builder::engine);
         Optional.ofNullable(chassisService.findById(1)).ifPresent(builder::chassis);
-        builder.color("Red").model("S60").name("Volvo");
+        builder.color("Red").models("S60").name("Volvo");
 
         return builder.build();
     }
 
-    @RequestMapping(value = "produces", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Car> produce() {
-        Car newCar = createNewCar();
-        carService.saveCar(newCar);
+    @RequestMapping(value = "produceCar/{mark}/{model}/{color}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Car> produce(@PathVariable String mark, @PathVariable String model, @PathVariable String color) {
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        Car build = createCarByURL(model, mark, color);
+        carService.saveCar(build);
+
+        return new ResponseEntity<Car>(build, HttpStatus.OK);
+    }
+
+    private Car createCarByURL(String model, String mark, String color) {
+
+        Car.CarBuilder builder = Car.builder();
+
+        builder.id(8);
+        builder.name(mark).models(model).color(color);
+        Optional.ofNullable(engineService.findById(1)).ifPresent(builder::engine);
+        Optional.ofNullable(bodyService.findById(1)).ifPresent(builder::body);
+        Optional.ofNullable(chassisService.findById(1)).ifPresent(builder::chassis);
+
+        return builder.build();
     }
 }

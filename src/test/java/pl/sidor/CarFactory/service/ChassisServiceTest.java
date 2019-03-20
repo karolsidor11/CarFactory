@@ -2,7 +2,7 @@
 //
 //import org.junit.Test;
 //import pl.sidor.CarFactory.dao.ChassisDaoImit;
-//import pl.sidor.CarFactory.model.Chassis;
+//import pl.sidor.CarFactory.models.Chassis;
 //
 //import java.util.List;
 //import java.util.Optional;

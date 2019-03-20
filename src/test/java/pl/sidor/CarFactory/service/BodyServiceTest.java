@@ -1,62 +1,56 @@
 //package pl.sidor.CarFactory.service;
 //
-//import model.Body;
-//import org.junit.Before;
+//import models.Body;
+//import org.junit.Assert;
 //import org.junit.Test;
-//import pl.sidor.CarFactory.dao.BodyDaoImit;
-//import pl.sidor.CarFactory.model.Body;
+//import org.junit.runner.RunWith;
+//import org.mockito.InjectMocks;
+//import org.mockito.Mock;
+//import org.mockito.Mockito;
+//import org.mockito.junit.MockitoJUnitRunner;
+//import org.springframework.core.ParameterizedTypeReference;
+//import org.springframework.http.HttpMethod;
+//import org.springframework.http.HttpStatus;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.web.client.RestTemplate;
 //
+//import java.util.ArrayList;
 //import java.util.List;
-//import java.util.Optional;
 //
-//import static org.junit.Assert.assertEquals;
-//
+//@RunWith(MockitoJUnitRunner.class)
 //public class BodyServiceTest {
 //
-//    private BodyDaoImit bodyDaoImit;
-//    private Body body;
+//    private static final String URL = "http://localhost:8080/";
+//    @Mock
+//    private RestTemplate restTemplate;
 //
-//    @Before
-//    public void before() {
-//        bodyDaoImit = new BodyDaoImit();
-//        body = new Body(5, "Avant", "Biały", 7);
+//    @InjectMocks
+//    private BodyService bodyService = new BodyServiceImpl(restTemplate);
+//
+//    @Test
+//    public void givenBodyByIdFromAutoParts() {
+//
+//        Body body = new Body(1, "Avant", "Red", 4);
+//
+//        Mockito.
+//                when(restTemplate.exchange(URL + "body/1", HttpMethod.GET, null, new ParameterizedTypeReference<Body>() {
+//                })).thenReturn(new ResponseEntity<Body>(body, HttpStatus.OK));
+//
+//        Body byId = bodyService.findById(1);
+//
+//        Assert.assertEquals(body, byId);
 //    }
 //
 //    @Test
-//    public void shouldCreateBody() {
-//        Body body = new Body(1, "Avant", "Czarny", 5);
+//    public void givenFindAllBody() {
 //
-//        assertEquals(1, body.getId());
-//        assertEquals("Avant", body.getBodyCar());
-//        assertEquals("Czarny", body.getColor());
+//        List<Body> bodies = new ArrayList<>();
+//        Mockito.
+//                when(restTemplate.exchange(URL + "bodies", HttpMethod.GET, null, new ParameterizedTypeReference<List<Body>>() {
+//                })).thenReturn(new ResponseEntity<List<Body>>(bodies, HttpStatus.OK));
 //
-//    }
-//
-//    @Test
-//    public void shouldReturnSizeList() {
-//
-//        Optional<List<Body>> all = bodyDaoImit.findAll();
-//
-//        assertEquals(4, bodyDaoImit.findAll().get().size());
-//    }
-//
-//    @Test
-//    public void shouldBodyCarFromId() {
-//        Optional<Body> byId = bodyDaoImit.findById(1);
-//
-//        assertEquals("Avant", bodyDaoImit.findById(1).get().getBodyCar());
-//    }
-//
-//    @Test
-//    public void shouldAddBodyToList(){
-//
-//        Optional<List<Body>> all = bodyDaoImit.findAll();
-//
-//        List<Body> bodies = all.get();
-//        bodies.add(body);
-//
-//        assertEquals(5,bodyDaoImit.findAll().get().size() );
-//
+//        List<Body> all = bodyService.findAll();
+//        Assert.assertEquals(0, all.size());
 //    }
 //
 //
