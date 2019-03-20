@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CarDao extends CrudRepository<Car, Integer> {
+public interface CarDao{
 
 }
