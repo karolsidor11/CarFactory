@@ -47,7 +47,6 @@ public class CarServiceImpl implements CarService {
     public Car saveCar(Car car) {
 
         return restTemplate.postForObject(AUTO_PARTS_URL + "save", car, Car.class);
-
     }
 
 }

@@ -63,7 +63,13 @@ public class CarController {
 
         Optional<List<Car>> all = Optional.ofNullable(carService.findAll());
 
-//todo do service
+        todoDoService(count, all);
+
+        return all.map(cars -> new ResponseEntity(all, HttpStatus.OK)).orElseGet(() -> new ResponseEntity(HttpStatus.NOT_FOUND));
+
+    }
+
+    private void todoDoService(@PathVariable int count, Optional<List<Car>> all) {
         for (int i = 0; i < count; i++) {
             Car newCar = createNewCar();
             if (all.isPresent()) {
@@ -71,12 +77,9 @@ public class CarController {
                 carService.saveCar(newCar);
             }
         }
-
-        return all.map(cars -> new ResponseEntity(all, HttpStatus.OK)).orElseGet(() -> new ResponseEntity(HttpStatus.NOT_FOUND));
-
     }
 
-    public Car createNewCar() {
+    private Car createNewCar() {
         Car.CarBuilder builder = Car.builder();
 
         builder.id(1);

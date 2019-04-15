@@ -35,7 +35,8 @@ public class ChassisServiceImpl implements ChassisService {
     }
 
     private ResponseEntity<List<Chassis>> getChassisFromAutoParts() {
-        return template.exchange(AUTO_PARTS_URL + "chassis", HttpMethod.GET, null, new ParameterizedTypeReference<List<Chassis>>() {
+        return template.exchange(AUTO_PARTS_URL + "chassis", HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Chassis>>() {
         });
     }
 
@@ -47,7 +48,8 @@ public class ChassisServiceImpl implements ChassisService {
     }
 
     private ResponseEntity<Chassis> getChassisByIdFromAutoParts(int id) {
-        return template.exchange(AUTO_PARTS_URL + "chassis/" + id, HttpMethod.GET, null, new ParameterizedTypeReference<Chassis>() {
+        return template.exchange(AUTO_PARTS_URL + "chassis/" + id, HttpMethod.GET, null,
+                new ParameterizedTypeReference<Chassis>() {
         });
     }
 }
