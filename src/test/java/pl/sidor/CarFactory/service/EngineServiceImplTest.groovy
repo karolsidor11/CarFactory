@@ -25,8 +25,7 @@ class EngineServiceImplTest extends Specification {
         Engine engine = new Engine.EngineBuilder().id(1).torque(22).capacity(200).build()
 
         restTemplate.exchange(AUTO_PART_URL + "engine/" + id, HttpMethod.GET, null, new ParameterizedTypeReference<Engine>() {
-        }) >>
-                ResponseEntity.ok(engine)
+        }) >> ResponseEntity.ok(engine)
 
         when:
         Engine actualEngine = engineService.findById(id)
@@ -39,7 +38,7 @@ class EngineServiceImplTest extends Specification {
     def "should return Engine List"() {
         given:
 
-        List<Engine> engineList = new ArrayList<>();
+        List<Engine> engineList = new ArrayList<>()
         Engine engine1 = new Engine.EngineBuilder().id(1).torque(22).capacity(120).build()
         Engine engine2 = new Engine.EngineBuilder().id(2).torque(222).capacity(110).build()
         Engine engine3 = new Engine.EngineBuilder().id(3).torque(232).capacity(130).build()
@@ -57,8 +56,23 @@ class EngineServiceImplTest extends Specification {
         List<Engine> actualEngines = engineService.findAll()
 
         then:
-        actualEngines!=null
-        actualEngines==engineList
-        actualEngines.size()==4
+        actualEngines != null
+        actualEngines == engineList
+        actualEngines.size() == 4
+    }
+
+    def " should return Empty Engine List"() {
+
+        given:
+        restTemplate.exchange(AUTO_PART_URL + "engines", HttpMethod.GET, null, new ParameterizedTypeReference<List<Engine>>() {
+        }) >> ResponseEntity.ok(Collections.emptyList())
+
+        when:
+        List<Engine> actualEngineList = engineService.findAll()
+
+        then:
+        actualEngineList.isEmpty()
+        actualEngineList.size() == 0
+
     }
 }

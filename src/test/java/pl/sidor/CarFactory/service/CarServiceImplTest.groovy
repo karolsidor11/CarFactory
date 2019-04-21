@@ -19,7 +19,7 @@ class CarServiceImplTest extends Specification {
         carService = new CarServiceImpl(restTemplate)
     }
 
-    def "should  find Engine List"() {
+    def "should  find Car List"() {
 
         given:
         List<Car> carList = new ArrayList<>()
@@ -54,7 +54,22 @@ class CarServiceImplTest extends Specification {
         Car actualCar = carService.saveCar(car)
 
         then:
-        actualCar!=null
-        actualCar==car
+        actualCar != null
+        actualCar == car
+    }
+
+    def "should return Empty Car List"() {
+
+        given:
+        restTemplate.exchange(AUTO_PARTS_URL + "cars", HttpMethod.GET, null, new ParameterizedTypeReference<List<Car>>() {
+        }) >> ResponseEntity.ok(new ArrayList())
+
+        when:
+        List<Car> actualCarList = carService.findAll()
+
+        then:
+        actualCarList.isEmpty()
+        actualCarList.size()==0
+
     }
 }

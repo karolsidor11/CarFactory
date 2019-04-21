@@ -27,11 +27,7 @@ public class BodyServiceImpl implements BodyService {
 
         ResponseEntity<List<Body>> exchange = getAllBodyFromAutoParts();
 
-        if (!exchange.getBody().isEmpty()) {
-            return exchange.getBody();
-        } else {
-            return Collections.emptyList();
-        }
+        return !exchange.getBody().isEmpty() ? exchange.getBody() : Collections.emptyList();
     }
 
     private ResponseEntity<List<Body>> getAllBodyFromAutoParts() {
@@ -42,16 +38,12 @@ public class BodyServiceImpl implements BodyService {
     @Override
     public Body findById(int id) {
 
-        ResponseEntity<Body> exchange = getBodyFromAutoParts(AUTO_PART_URL + "body/" + id);
-
-        return exchange.getBody();
-
+        return getBodyFromAutoParts(AUTO_PART_URL + "body/" + id).getBody();
     }
 
     private ResponseEntity<Body> getBodyFromAutoParts(String url) {
         return template.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<Body>() {
         });
     }
-
 }
 

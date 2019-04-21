@@ -3,6 +3,7 @@ package pl.sidor.CarFactory.service
 import models.Body
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpMethod
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.client.RestTemplate
 import spock.lang.Specification
@@ -24,7 +25,6 @@ class BodyServiceImplTest extends Specification {
         restTemplate.exchange(AUTO_PART_URL + "body/1", HttpMethod.GET, null, new ParameterizedTypeReference<Body>() {
         }) >> ResponseEntity.ok(body)
 
-
         when:
         Body exchange = bodyService.findById(1)
 
@@ -43,15 +43,30 @@ class BodyServiceImplTest extends Specification {
         bodyList.add(body2)
         bodyList.add(body3)
 
-        restTemplate.exchange(AUTO_PART_URL+"bodies", HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Body>>() {})>> ResponseEntity.ok(bodyList)
+        restTemplate.exchange(AUTO_PART_URL + "bodies", HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Body>>() {}) >> ResponseEntity.ok(bodyList)
 
         when:
-        List<Body> actualBodyList =bodyService.findAll()
+        List<Body> actualBodyList = bodyService.findAll()
         then:
-        actualBodyList!=null
-        actualBodyList.size()==3
-        actualBodyList==bodyList
+        actualBodyList != null
+        actualBodyList.size() == 3
+        actualBodyList == bodyList
 
+    }
+
+    def "should return  404 error"() {
+        given:
+        Integer id = -1
+
+        restTemplate.exchange(AUTO_PART_URL + "body/" + id, HttpMethod.GET, null, new ParameterizedTypeReference<Body>() {
+        }) >> new ResponseEntity<Body>(null, HttpStatus.NOT_FOUND)
+
+        when:
+        Body bodyActual = bodyService.findById(id)
+
+        then:
+        bodyActual == null
+//        todo  jak sprawdzić status  HTTP 404
     }
 }

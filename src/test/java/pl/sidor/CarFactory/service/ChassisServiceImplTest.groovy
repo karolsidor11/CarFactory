@@ -3,6 +3,7 @@ package pl.sidor.CarFactory.service
 import models.Chassis
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpMethod
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.client.RestTemplate
 import spock.lang.Specification
@@ -23,7 +24,7 @@ class ChassisServiceImplTest extends Specification {
         Integer id = 1
         Chassis chassis = new Chassis.ChassisBuilder().id(1).brakes("Brembo").drive("XDrive").build()
         restTemplate.exchange(AUTO_PARTS_URL + "chassis/" + id, HttpMethod.GET, null, new ParameterizedTypeReference<Chassis>() {
-        }) >> ResponseEntity.ok(chassis)
+        }) >> new ResponseEntity<Chassis>(chassis, HttpStatus.OK)
 
         when:
         Chassis actualChassis = chassisService.findById(id)
@@ -33,7 +34,7 @@ class ChassisServiceImplTest extends Specification {
         actualChassis == chassis
     }
 
-    def "shuld return Chassis List"() {
+    def "should return Chassis List"() {
         given:
         List<Chassis> chassisList = new ArrayList<>()
         Chassis chassis1 = new Chassis.ChassisBuilder().id(1).brakes("Brembo").drive("Quattro").build()
@@ -53,8 +54,20 @@ class ChassisServiceImplTest extends Specification {
         List<Chassis> actualListChassis = chassisService.findAll()
 
         then:
-        actualListChassis!=null
-        actualListChassis==chassisList
-        actualListChassis.size()==4
+        actualListChassis != null
+        actualListChassis == chassisList
+        actualListChassis.size() == 4
+    }
+
+    def "should return Empty Chassis List"() {
+        given:
+        restTemplate.exchange(AUTO_PARTS_URL + "chassis", HttpMethod.GET, null, new ParameterizedTypeReference<List<Chassis>>() {
+        }) >> ResponseEntity.ok(Collections.emptyList())
+
+        when:
+        List<Chassis> actualChassisList = chassisService.findAll()
+
+        then:
+        actualChassisList.isEmpty()
     }
 }

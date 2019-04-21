@@ -1,5 +1,6 @@
 package pl.sidor.CarFactory.service;
 
+import lombok.extern.slf4j.Slf4j;
 import models.Chassis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -12,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
+@Slf4j
 public class ChassisServiceImpl implements ChassisService {
 
     private RestTemplate template;
@@ -27,16 +29,11 @@ public class ChassisServiceImpl implements ChassisService {
 
         ResponseEntity<List<Chassis>> exchange1 = getChassisFromAutoParts();
 
-        if (!exchange1.getBody().isEmpty()) {
-            return exchange1.getBody();
-        } else {
-            return Collections.emptyList();
-        }
+        return !exchange1.getBody().isEmpty() ? exchange1.getBody() : Collections.emptyList();
     }
 
     private ResponseEntity<List<Chassis>> getChassisFromAutoParts() {
-        return template.exchange(AUTO_PARTS_URL + "chassis", HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Chassis>>() {
+        return template.exchange(AUTO_PARTS_URL + "chassis", HttpMethod.GET, null, new ParameterizedTypeReference<List<Chassis>>() {
         });
     }
 
@@ -48,8 +45,7 @@ public class ChassisServiceImpl implements ChassisService {
     }
 
     private ResponseEntity<Chassis> getChassisByIdFromAutoParts(int id) {
-        return template.exchange(AUTO_PARTS_URL + "chassis/" + id, HttpMethod.GET, null,
-                new ParameterizedTypeReference<Chassis>() {
+        return template.exchange(AUTO_PARTS_URL + "chassis/" + id, HttpMethod.GET, null, new ParameterizedTypeReference<Chassis>() {
         });
     }
 }

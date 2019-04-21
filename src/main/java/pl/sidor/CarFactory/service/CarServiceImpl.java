@@ -25,17 +25,9 @@ public class CarServiceImpl implements CarService {
     @Override
     public List<Car> findAll() {
 
-        ResponseEntity<List<Car>> exchange1 = getCarsFromAutoParts();
+        ResponseEntity<List<Car>> exchange1 = getCars();
 
-        if (!exchange1.getBody().isEmpty()) {
-            return exchange1.getBody();
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    private ResponseEntity<List<Car>> getCarsFromAutoParts() {
-        return getCars();
+        return !exchange1.getBody().isEmpty() ? exchange1.getBody() : Collections.emptyList();
     }
 
     private ResponseEntity<List<Car>> getCars() {
